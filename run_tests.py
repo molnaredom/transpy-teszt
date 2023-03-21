@@ -10,6 +10,7 @@ from adam.codecov_api import get_coverage
 from adam.radon_machine import get_radon_metrics, radons_diff
 PROJECTS_PATH = Path(__file__).parent.resolve() / "projects"
 TEST_MEASURES_PATH = Path(__file__).parent.resolve() / "test_measures.json"
+DEFAULT_PATH = Path(__file__).parent.resolve()
 
 
 def get_unittest_data(project, func, transformed=False, iter=5):
@@ -162,30 +163,35 @@ PROJECTS = {
 }
 
 def main():
-    os.chdir(Path(__file__).parent.resolve())
-    subprocess.call(['git', 'clone', "https://github.com/Tirasz/transpy.git"])
-    test_iteration = 1
-    if not PROJECTS_PATH.exists():
-        os.mkdir(PROJECTS_PATH)
+    try:
+        os.chdir(Path(__file__).parent.resolve())
+        subprocess.call(['git', 'clone', "https://github.com/Tirasz/transpy.git"])
+        test_iteration = 1
+        if not PROJECTS_PATH.exists():
+            os.mkdir(PROJECTS_PATH)
 
-    for project, (url, func) in PROJECTS.items():
-        print("----------------------------\nStart:", project)
-        os.chdir(PROJECTS_PATH)
-        subprocess.call(['git', 'clone', url])
-        try:
-            for _ in range(test_iteration):
-                data = get_unittest_data(project, func, iter=1)
-                data.extend(get_unittest_data(project, func, transformed=True, iter=1))
-                save_data_json(data, url, project)
-        except FileNotFoundError:
-            with open("cant_find_projects.txt", "a") as f:
-                f.write(str(project) + "\n")
-            print("Can't find ", project)
-        # except Exception:
-        #     print("Exception: ", project)
-        else:
-            print("Successful:", project)
-
+        for project, (url, func) in PROJECTS.items():
+            print("----------------------------\nStart:", project)
+            os.chdir(PROJECTS_PATH)
+            subprocess.call(['git', 'clone', url])
+            try:
+                for _ in range(test_iteration):
+                    data = get_unittest_data(project, func, iter=1)
+                    data.extend(get_unittest_data(project, func, transformed=True, iter=1))
+                    save_data_json(data, url, project)
+            except FileNotFoundError:
+                with open("cant_find_projects.txt", "a") as f:
+                    f.write(str(project) + "\n")
+                print("Can't find ", project)
+            else:
+                print("Successful:", project)
+    except KeyboardInterrupt:
+        print("*"*50, "\n           Művelet megszakítva\n", "*"*50)
+        os.chdir(DEFAULT_PATH)
+    except Exception as e:
+        print("*" * 50, "\nHIBA\n", "*" * 50)
+        os.chdir(DEFAULT_PATH)
+        raise e
 
 if __name__ == "__main__":
     main()
