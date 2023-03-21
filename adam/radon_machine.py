@@ -1,14 +1,7 @@
-
 import os
 import subprocess
 import json
-# modules = os.listdir("../projects/")
-# modules = [
-#             " molnaredom", "InstaPy-transpy",
-#            #  "InstaPy", "transformed-InstaPy",
-#            # "tqdm", "transformed-tqdm"
-#            ]
-# os.chdir("../projects/")
+
 
 def find_number(content:str, point_allowed=False):
     str_number= ""
@@ -45,9 +38,6 @@ def raw(module_name):
     proc = subprocess.Popen(f"radon raw {module_name} -s",
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, encoding="utf-8")
     lines = proc.stdout.readlines()
-    print("..........................START....................................")
-    [print(i, end="") for i in lines]
-    print("...............................END...............................")
     raw_data["LOC"] = find_number(lines[-12])
     raw_data["LLOC"] = find_number(lines[-11])
     raw_data["SLOC"] = find_number(lines[-10])
@@ -60,6 +50,21 @@ def raw(module_name):
     raw_data["C + M % L (in percentage)"] = find_number(lines[-2])
 
     return raw_data
+def halstead(module_name):
+    """Does not work"""
+    raw_data = dict()
+    proc = subprocess.Popen(f"radon hal {module_name}  -j",
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, encoding="utf-8")
+    lines = proc.stdout.readlines()
+    print("..........................START....................................")
+    [print(i, end="") for i in lines]
+    print("...............................END...............................")
+    mi_json = json.loads(lines[0])
+    print(mi_json)
+    # mi_values = [v["mi"] for k, v in mi_json.items() if "mi" in v]
+    # agv = sum(mi_values) / len(mi_values)
+
+    # raw_data["LOC"] = find_number(lines[-12])
 
 
 def get_radon_metrics(module_file_name):
@@ -67,6 +72,7 @@ def get_radon_metrics(module_file_name):
     metrics["Raw"] = raw(module_file_name)
     metrics["Complexity avg"] = compelxity(module_file_name)
     metrics["Maintainability avg"] = maintainability(module_file_name)
+    # metrics["Halstead avg"] = halstead(module_file_name)
     print(metrics)
     return metrics
 
@@ -77,18 +83,10 @@ def radons_diff(d1:dict, d2:dict):
     metrics["Complexity avg"] = d1["Complexity avg"] - d2["Complexity avg"]
     metrics["Maintainability avg"] = d1["Maintainability avg"] - d2["Maintainability avg"]
     metrics["Raw"] = {key: d1["Raw"][key] - d2["Raw"][key] for key in d1["Raw"]}
-    # print(metrics)
+    # metrics["Halstead avg"] = {key: d1["Halstead"][key] - d2["Halstead"][key] for key in d1["Halstead"]}
 
     return metrics
 
-
-# for module_name in modules:
-#     print("module_name: ", module_name)
-#     metrics = dict()
-#     metrics["Complexity avg"] = compelxity(module_name)
-#     metrics["Maintainability avg"] = maintainability(module_name)
-#     metrics["Raw"] = raw(module_name)
-#     print(metrics)
 
 
 

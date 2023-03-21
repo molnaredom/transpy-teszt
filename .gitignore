@@ -1,4 +1,5 @@
 projects
-transpy
+transpy/*
 */__pycache__
 measures/test_measures.json
+adam/keys

@@ -3,7 +3,7 @@ import json
 import requests
 
 CODECOV_ENDPOINT = "https://codecov.io/api/v2/github/bokeh/{}"
-TOKEN_NAME = "3ce1846d-ef7e-4e7b-aa7a-b0b64fd3b460"
+TOKEN_NAME = open("keys/codecov_token", "w").read()
 CODECOV_HEADERS = {
     'Authorization': 'bearer {}'.format(TOKEN_NAME)
 }

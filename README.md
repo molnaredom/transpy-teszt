@@ -7,7 +7,7 @@
 
 - Teljesebb kiértékelés(mostani upgradelése)
   - [x] test coverage
-  - [x] funtime 
+  - [x] runtime 
   - [x] memory
   - Metrics
     - [x] Raw
