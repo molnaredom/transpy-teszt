@@ -1,0 +1,40 @@
+{
+    "records": [
+        {
+            "name": "discord.py",
+            "transformed": false,
+            "time": 0.21133059699786827,
+            "memory": 0.722656
+        },
+        {
+            "name": "discord.py",
+            "transformed": true,
+            "time": 0.19595199200193747,
+            "memory": 0.699219
+        },
+        {
+            "name": "discord.py",
+            "transformed": false,
+            "time": 0.2161961470010283,
+            "memory": 0.703125
+        },
+        {
+            "name": "discord.py",
+            "transformed": true,
+            "time": 0.23337159699804033,
+            "memory": 0.671875
+        },
+        {
+            "name": "discord.py",
+            "transformed": false,
+            "time": 0.24390031599978101,
+            "memory": 0.625
+        },
+        {
+            "name": "discord.py",
+            "transformed": true,
+            "time": 0.199909128001309,
+            "memory": 0.691406
+        }
+    ]
+}
