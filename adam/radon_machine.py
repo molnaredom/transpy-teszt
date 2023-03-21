@@ -22,9 +22,9 @@ def compelxity(module_name):
     proc = subprocess.Popen(f"radon cc {module_name} --total-average",
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     c = proc.stdout.read()
-    print("---", module_name)
-    print("---", os.getcwd())
-    print("---", c)
+    # print("---", module_name)
+    # print("---", os.getcwd())
+    # print("---", c)
     avg_complexity = c.decode('utf-8').strip().split("\n")[-2][20:]
     return find_number(avg_complexity, point_allowed=True)
 
@@ -45,6 +45,9 @@ def raw(module_name):
     proc = subprocess.Popen(f"radon raw {module_name} -s",
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, encoding="utf-8")
     lines = proc.stdout.readlines()
+    print("..........................START....................................")
+    [print(i, end="") for i in lines]
+    print("...............................END...............................")
     raw_data["LOC"] = find_number(lines[-12])
     raw_data["LLOC"] = find_number(lines[-11])
     raw_data["SLOC"] = find_number(lines[-10])
@@ -61,9 +64,9 @@ def raw(module_name):
 
 def get_radon_metrics(module_file_name):
     metrics = dict()
+    metrics["Raw"] = raw(module_file_name)
     metrics["Complexity avg"] = compelxity(module_file_name)
     metrics["Maintainability avg"] = maintainability(module_file_name)
-    metrics["Raw"] = raw(module_file_name)
     print(metrics)
     return metrics
 
@@ -74,7 +77,7 @@ def radons_diff(d1:dict, d2:dict):
     metrics["Complexity avg"] = d1["Complexity avg"] - d2["Complexity avg"]
     metrics["Maintainability avg"] = d1["Maintainability avg"] - d2["Maintainability avg"]
     metrics["Raw"] = {key: d1["Raw"][key] - d2["Raw"][key] for key in d1["Raw"]}
-    print(metrics)
+    # print(metrics)
 
     return metrics
 

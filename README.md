@@ -5,15 +5,15 @@
 
 - [ ] Több teszt több modulra, több iteációban és azokból átlagot vonni [x]
 
-- [ ] Teljesebb kiértékelés(mostani upgradelése)
+- Teljesebb kiértékelés(mostani upgradelése)
   - [x] test coverage
-  - [x] futásidő 
-  - [x] memóriaigény
-  - kód minőség mérés
-    - [ ] Raw
-    - [ ] CC code complexity
-    - [ ] ...
-    - [ ] ...
+  - [x] funtime 
+  - [x] memory
+  - Metrics
+    - [x] Raw
+    - [x] CC (Code Complexity)
+    - [x] MI (Maintainability)
+    - [ ] hal (Halstead complexity)
   - [ ] művelet/időegység 
 
 - [ ] Nem ismer fel minden mintát --> finomítani kellene

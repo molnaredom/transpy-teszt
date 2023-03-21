@@ -96,7 +96,7 @@ def save_data_json(data, url, project):
         diff = file_data[record["name"]]["difference"]
         original = file_data[record["name"]]["original"]
         transformed = file_data[record["name"]]["transformed"]
-        diff["radon-metrics"] = radons_diff( transformed["radon_metrics"],original["radon_metrics"])
+        diff["radon-metrics"] = radons_diff(transformed["radon_metrics"], original["radon_metrics"])
         diff["time_avg"] = [str(
             original["time_avg"] - transformed[
                 "time_avg"]) + " sec",
@@ -180,7 +180,7 @@ def main():
                     data.extend(get_unittest_data(project, func, transformed=True, iter=1))
                     save_data_json(data, url, project)
             except FileNotFoundError:
-                with open("cant_find_projects.txt", "a") as f:
+                with open("measures/cant_find_projects.txt", "a") as f:
                     f.write(str(project) + "\n")
                 print("Can't find ", project)
             else:
