@@ -79,12 +79,26 @@ def get_radon_metrics(module_file_name):
 
 def radons_diff(d1:dict, d2:dict):
     """ d1-d2 """
-    metrics = dict()
-    metrics["Complexity avg"] = d1["Complexity avg"] - d2["Complexity avg"]
-    metrics["Maintainability avg"] = d1["Maintainability avg"] - d2["Maintainability avg"]
-    metrics["Raw"] = {key: d1["Raw"][key] - d2["Raw"][key] for key in d1["Raw"]}
-    # metrics["Halstead avg"] = {key: d1["Halstead"][key] - d2["Halstead"][key] for key in d1["Halstead"]}
+    def add_measures(metrics_name, nested=False):
+        if not nested:
+            metrics[metrics_name] = {
+                "value": d1[metrics_name] - d2[metrics_name],
+                "percentage": 100 * (1 -d1[metrics_name] / d2[metrics_name])}
+        else:
+            metrics[metrics_name] = {
+                "value": {key: d1[metrics_name][key] - d2[metrics_name][key] for key in d1[metrics_name]},
+                "percentage": {key: (1 - d1[metrics_name][key] / d2[metrics_name][key]) * 100 for key in d1[metrics_name]}}
 
+    metrics = dict()
+    add_measures("Complexity avg")
+    add_measures("Maintainability avg")
+    add_measures("Raw", nested=True)
+    with open("../../radon_eredmenyek.csv", "a") as f:
+        print(f"Complexity avg;{metrics['Complexity avg']['value']};{metrics['Complexity avg']['percentage']}%", file=f)
+        print(f"Maintainability avg;{metrics['Maintainability avg']['value']};{metrics['Maintainability avg']['percentage']}%", file=f)
+        print(f"LOC;{metrics['Raw']['value']['LOC']};{metrics['Raw']['percentage']['LOC']}%", file=f)
+        print(f"LLOC;{metrics['Raw']['value']['LLOC']};{metrics['Raw']['percentage']['LLOC']}%", file=f)
+        print("-;-;-", file=f)
     return metrics
 
 

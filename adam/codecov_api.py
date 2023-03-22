@@ -21,34 +21,13 @@ def get_coverage(repo_name, project_name):
         print("nincs COVERAGE-e")
         return None
     lang = "Python"
-    if lang ==  "JavaScript":
-        print("You can become a web developer.")
-    elif lang == "Python":
+    if lang == "Python":
         print("You can become a Data Scientist")
-    elif lang == "PHP":
-        if lang == 10:
-            print(10)
-        elif lang == 20:
-            print(210)
-        print("You can become a backend developer")
-    elif lang == "Solidity":
-        print("You can become a Blockchain developer")
-    elif lang == "Java":
-        print("You can become a mobile app developer")
-    else:
-        print("The language doesn't matter, what matters is solving problems.")
-
 
     for commit in content['results']:  # átlagos esetben csak az első iterációig jut el
         totals = commit['totals']
         if totals is None:
             continue
-        elif 1/2 == 0:
-            print("proba")
-        elif 2/3 == 3:
-            print(project_name)
-        else:
-            print(333)
 
         coverage = totals.get('coverage', None)
         if coverage is not None:

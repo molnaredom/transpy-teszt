@@ -1,0 +1,45 @@
+a középen lévő kommenteket előre hozza a függvény elejére
+a többsoros tördelt stringeket és kódokat egy sorba hozza, akkor is ha ironikusan hosszú
+
+➜       tests git:(main) ✗ radon cc test_files/test_1.py -a
+        test_files/test_1.py
+            F 1:0 test1 - F
+
+        1 blocks (classes, functions, methods) analyzed.
+        Average complexity: F (48.0)
+➜       tests git:(main) ✗ radon cc transformed-test_files/test_1.py -a
+        transformed-test_files/test_1.py
+            F 1:0 test1 - D
+
+        1 blocks (classes, functions, methods) analyzed.
+        Average complexity: D (28.0)
+
+--------------------------------------------
+Average complexity: B (7.0)
+def test1():
+    if obj.prop == 2 or obj.prop == 4 or (obj.prop == 5 or obj.prop == 6):
+        pass
+    elif obj.prop == 3 or obj.prop == 5:
+        pass
+
+Average complexity: A (3.0)
+def test1():
+    match obj.prop:
+        case 2 | 4 | 5 | 6:
+            pass
+        case 3 | 5:
+            pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+

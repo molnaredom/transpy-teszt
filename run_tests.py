@@ -129,10 +129,10 @@ def _django_test(project):
 
 
 PROJECTS = {
-    # "asztro": ("https://github.com/molnaredom/asztro", _pytest),
+    "asztro": ("https://github.com/molnaredom/asztro", _pytest),
     # "keras": ("https://github.com/keras-team/keras", _pytest),
     # "discord.py": ("https://github.com/Rapptz/discord.py", _pytest),
-    "InstaPy": ("https://github.com/InstaPy/InstaPy", _pytest),
+    # "InstaPy": ("https://github.com/InstaPy/InstaPy", _pytest),
     # "django": ("https://github.com/django/django", _django_test),
     # "pylint": ("https://github.com/PyCQA/pylint", _pytest),
     # "flask": ("https://github.com/pallets/flask", _pytest),

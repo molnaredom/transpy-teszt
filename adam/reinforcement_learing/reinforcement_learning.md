@@ -92,7 +92,7 @@ else:
 
 osszes elif = 3
 osszes eleagazas = 5
-max feltételszám egy if/elif-ben = 3
+legtöbb feltételszám egy if/elif-ben = 3
 osszes vizsgalt feltetel = 7
 sorok szama mindennel egyutt = 10
 avg - feltetelszam / if = 7/4 = 1.75
