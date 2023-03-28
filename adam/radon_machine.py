@@ -52,19 +52,13 @@ def raw(module_name):
 
     return raw_data
 def halstead(module_name):
-    raw_data = dict()
     proc = subprocess.Popen(f"radon hal {module_name} -j",
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, encoding="utf-8")
     lines = proc.stdout.readlines()
-    print("..........................START....................................")
-
-    # print("...............................END...............................")
     hal_json = json.loads(lines[0])
-    # print(hal_json)
-    # [print(k,v["total"], end="\n") for k,v in hal_json.items()]
     halstead_metric_names = ["h1", "h2", "N1", "N2", "vocabulary", "length",
                              "calculated_length", "volume",
-                             "ifficulty", "effort", "time", "bugs"]
+                             "difficulty", "effort", "time", "bugs"]
     szotar = {}
     for k,v in hal_json.items():
         if "total" in v:
@@ -77,21 +71,17 @@ def halstead(module_name):
                     szotar[halstead_metric_names[i]] = [v["total"][i]]  # create list
         else:
             print("problem", k, v)
-    print(szotar)
-    eredmeny = {}
+    # print(szotar)
+    eredmeny = {} # TOTAL halstead metrics
     for k, v in szotar.items():
-        eredmeny[k] = {"sum": sum(v),"avg":sum(v)/len(v) }
-    print(eredmeny)
+        eredmeny[k] = sum(v)    # {"sum": ,"avg":}sum(v)/len(v)
+    # print(eredmeny)
     return eredmeny
-    # mi_values = [v["mi"] for k, v in mi_json.items() if "mi" in v]
-    # agv = sum(mi_values) / len(mi_values)
-
-    # raw_data["LOC"] = find_number(lines[-12])
 
 
 def get_radon_metrics(module_file_name):
     metrics = dict()
-    metrics["Halstead avg"] = halstead(module_file_name)
+    metrics["Halstead"] = halstead(module_file_name)
     metrics["Raw"] = raw(module_file_name)
     metrics["Complexity avg"] = compelxity(module_file_name)
     metrics["Maintainability avg"] = maintainability(module_file_name)
@@ -115,12 +105,14 @@ def radons_diff(d1:dict, d2:dict):
     add_measures("Complexity avg")
     add_measures("Maintainability avg")
     add_measures("Raw", nested=True)
-    with open("../../radon_eredmenyek.csv", "a") as f:
-        print(f"Complexity avg;{metrics['Complexity avg']['value']};{metrics['Complexity avg']['percentage']}%", file=f)
-        print(f"Maintainability avg;{metrics['Maintainability avg']['value']};{metrics['Maintainability avg']['percentage']}%", file=f)
-        print(f"LOC;{metrics['Raw']['value']['LOC']};{metrics['Raw']['percentage']['LOC']}%", file=f)
-        print(f"LLOC;{metrics['Raw']['value']['LLOC']};{metrics['Raw']['percentage']['LLOC']}%", file=f)
-        print("-;-;-", file=f)
+    add_measures("Halstead", nested=True)
+
+    # with open("../../radon_eredmenyek.csv", "a") as f:
+    #     print(f"Complexity avg;{metrics['Complexity avg']['value']};{metrics['Complexity avg']['percentage']}%", file=f)
+    #     print(f"Maintainability avg;{metrics['Maintainability avg']['value']};{metrics['Maintainability avg']['percentage']}%", file=f)
+    #     print(f"LOC;{metrics['Raw']['value']['LOC']};{metrics['Raw']['percentage']['LOC']}%", file=f)
+    #     print(f"LLOC;{metrics['Raw']['value']['LLOC']};{metrics['Raw']['percentage']['LLOC']}%", file=f)
+    #     print("-;-;-", file=f)
     return metrics
 
 
