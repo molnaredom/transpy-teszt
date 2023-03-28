@@ -1,6 +1,7 @@
 import os
 import subprocess
 import json
+import sys
 
 
 def find_number(content:str, point_allowed=False):
@@ -51,16 +52,37 @@ def raw(module_name):
 
     return raw_data
 def halstead(module_name):
-    """Does not work"""
     raw_data = dict()
-    proc = subprocess.Popen(f"radon hal {module_name}  -j",
+    proc = subprocess.Popen(f"radon hal {module_name} -j",
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, encoding="utf-8")
     lines = proc.stdout.readlines()
     print("..........................START....................................")
-    [print(i, end="") for i in lines]
-    print("...............................END...............................")
-    mi_json = json.loads(lines[0])
-    print(mi_json)
+
+    # print("...............................END...............................")
+    hal_json = json.loads(lines[0])
+    # print(hal_json)
+    # [print(k,v["total"], end="\n") for k,v in hal_json.items()]
+    halstead_metric_names = ["h1", "h2", "N1", "N2", "vocabulary", "length",
+                             "calculated_length", "volume",
+                             "ifficulty", "effort", "time", "bugs"]
+    szotar = {}
+    for k,v in hal_json.items():
+        if "total" in v:
+            if len(v["total"]) != len(halstead_metric_names):
+                print("Big prob", len(v["total"]) , len(halstead_metric_names))
+            for i in range(len(v["total"])):
+                if halstead_metric_names[i] in szotar:
+                    szotar[halstead_metric_names[i]].append(v["total"][i])
+                else:
+                    szotar[halstead_metric_names[i]] = [v["total"][i]]  # create list
+        else:
+            print("problem", k, v)
+    print(szotar)
+    eredmeny = {}
+    for k, v in szotar.items():
+        eredmeny[k] = {"sum": sum(v),"avg":sum(v)/len(v) }
+    print(eredmeny)
+    return eredmeny
     # mi_values = [v["mi"] for k, v in mi_json.items() if "mi" in v]
     # agv = sum(mi_values) / len(mi_values)
 
@@ -69,10 +91,10 @@ def halstead(module_name):
 
 def get_radon_metrics(module_file_name):
     metrics = dict()
+    metrics["Halstead avg"] = halstead(module_file_name)
     metrics["Raw"] = raw(module_file_name)
     metrics["Complexity avg"] = compelxity(module_file_name)
     metrics["Maintainability avg"] = maintainability(module_file_name)
-    # metrics["Halstead avg"] = halstead(module_file_name)
     print(metrics)
     return metrics
 
