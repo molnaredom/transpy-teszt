@@ -1,4 +1,3 @@
-from collections import defaultdict
 import json
 import requests
 
@@ -16,14 +15,9 @@ def get_coverage(repo_name, project_name):
         headers=CODECOV_HEADERS,
     )
     content = json.loads(response.content)
-    commit = None
     if content['count'] == 0:
         print("nincs COVERAGE-e")
         return None
-    lang = "Python"
-    if lang == "Python":
-        print("You can become a Data Scientist")
-
     for commit in content['results']:  # átlagos esetben csak az első iterációig jut el
         totals = commit['totals']
         if totals is None:
@@ -33,6 +27,6 @@ def get_coverage(repo_name, project_name):
         if coverage is not None:
             return coverage  # legfrissebb coverage
         else:
-            print("Egy sikertelen proba coverage megtalasara")
+            print("X Egy sikertelen proba coverage megtalasara")
 
-    print('No coverage found on any commit')
+    print('X No coverage found on any commit')

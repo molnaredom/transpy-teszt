@@ -79,14 +79,24 @@ def halstead(module_name):
     return eredmeny
 
 
-def get_radon_metrics(module_file_name):
-    metrics = dict()
-    metrics["Halstead"] = halstead(module_file_name)
-    metrics["Raw"] = raw(module_file_name)
-    metrics["Complexity avg"] = compelxity(module_file_name)
-    metrics["Maintainability avg"] = maintainability(module_file_name)
-    print(metrics)
-    return metrics
+def get_radon_metrics(module_file_name, projects_path, debug):
+    current_cwd = os.getcwd()
+    os.chdir(projects_path)
+
+    cc = compelxity(module_file_name)
+    print(f"{cc}") if debug else None
+
+    mi = maintainability(module_file_name)
+    print(f"{mi}") if debug else None
+
+    mraw = raw(module_file_name)
+    print(f"{mraw}") if debug else None
+
+    hal = halstead(module_file_name)
+    print(f"{hal=}") if debug else None
+
+    os.chdir(current_cwd)
+    return cc, mi, mraw, hal
 
 
 def radons_diff(d1:dict, d2:dict):

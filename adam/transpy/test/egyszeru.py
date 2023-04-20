@@ -1,3 +1,14 @@
-def test1():
-    if obj.prop == 2 or obj.prop == 4 or (obj.prop == 5 or obj.prop == 6):
-        pass
+def something():
+    print("jee")
+def something_else():
+    print("jeeeee")
+
+def teszt(obj, Class, a, b):
+    if isinstance(obj, Class) and a:
+        if b:
+            return obj.copy()
+        return obj
+
+if __name__ == '__main__':
+    print(type)
+    teszt(1, int, int, int)
