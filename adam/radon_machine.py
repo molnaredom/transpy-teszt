@@ -13,7 +13,7 @@ def find_number(content:str, point_allowed=False):
 
 
 def compelxity(module_name):
-    proc = subprocess.Popen(f"radon cc {module_name} --total-average",
+    proc = subprocess.Popen(f"python3.11 /home/molnar/radon_eredeti/radon/__main__.py cc {module_name} --total-average",
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     c = proc.stdout.read()
     # print("---", module_name)
@@ -24,7 +24,7 @@ def compelxity(module_name):
 
 
 def maintainability(module_name):
-    proc = subprocess.Popen(f"radon mi {module_name} -j",
+    proc = subprocess.Popen(f"python3.11 /home/molnar/radon_eredeti/radon/__main__.py mi {module_name} -j",
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, encoding="utf-8")
 
     mi_json = json.loads(proc.stdout.readlines()[0])
@@ -36,7 +36,7 @@ def maintainability(module_name):
 
 def raw(module_name):
     raw_data = dict()
-    proc = subprocess.Popen(f"radon raw {module_name} -s",
+    proc = subprocess.Popen(f"python3.11 /home/molnar/radon_eredeti/radon/__main__.py raw {module_name} -s",
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, encoding="utf-8")
     lines = proc.stdout.readlines()
     raw_data["LOC"] = find_number(lines[-12])
@@ -51,8 +51,10 @@ def raw(module_name):
     raw_data["C + M % L (in percentage)"] = find_number(lines[-2])
 
     return raw_data
+
+
 def halstead(module_name):
-    proc = subprocess.Popen(f"radon hal {module_name} -j",
+    proc = subprocess.Popen(f"python3.11 /home/molnar/radon_eredeti/radon/__main__.py hal {module_name} -j",
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, encoding="utf-8")
     lines = proc.stdout.readlines()
     hal_json = json.loads(lines[0])

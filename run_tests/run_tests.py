@@ -1,3 +1,4 @@
+import time
 from dis import dis
 import json
 from pathlib import Path
@@ -10,7 +11,7 @@ from adam.codecov_api import get_coverage
 from adam.radon_machine import get_radon_metrics, radons_diff
 
 PROJECTS_PATH = Path(__file__).parent.resolve() / "projects"
-TEST_MEASURES_PATH = Path(__file__).parent.resolve() / "test_measures_v3.json"
+TEST_MEASURES_PATH = Path(__file__).parent.resolve() / "test_measures_v4.json"
 DEFAULT_PATH = Path(__file__).parent.resolve()
 
 
@@ -31,15 +32,14 @@ def _django_test(project):
 
 
 PROJECTS = {
-    # "asztro": ("https://github.com/molnaredom/asztro", _pytest),
-    # "keras": ("https://github.com/keras-team/keras", _pytest),
-    # "discord.py": ("https://github.com/Rapptz/discord.py", _pytest),
-    # "InstaPy": ("https://github.com/InstaPy/InstaPy", _pytest),
-    # "django": ("https://github.com/django/django", _django_test),
-    # "pylint": ("https://github.com/PyCQA/pylint", _pytest),
-    # "flask": ("https://github.com/pallets/flask", _pytest),
-    # "loguru": ("https://github.com/Delgan/loguru", _pytest),
-    # "autojump": ("https://github.com/wting/autojump", _pytest),
+    "keras": ("https://github.com/keras-team/keras", _pytest),
+    "discord.py": ("https://github.com/Rapptz/discord.py", _pytest),
+    "InstaPy": ("https://github.com/InstaPy/InstaPy", _pytest),
+    "django": ("https://github.com/django/django", _django_test),
+    "pylint": ("https://github.com/PyCQA/pylint", _pytest),
+    "flask": ("https://github.com/pallets/flask", _pytest),
+    "loguru": ("https://github.com/Delgan/loguru", _pytest),
+    "autojump": ("https://github.com/wting/autojump", _pytest),
     # "spleeter": ("https://github.com/deezer/spleeter", _pytest),
     # "freqtrade": ("https://github.com/freqtrade/freqtrade", _pytest),
     # "bokeh": ("https://github.com/bokeh/bokeh", _pytest),
@@ -54,28 +54,29 @@ PROJECTS = {
     # "python-telegram-bot": ("https://github.com/python-telegram-bot/python-telegram-bot", _pytest),
     # "lightning": ("https://github.com/Lightning-AI/lightning", _pytest),
     # "apache_airflow": ("https://github.com/apache/airflow", _pytest),
-    "certbot": ("https://github.com/certbot/certbot", _pytest),
-    "httpie": ("https://github.com/httpie/httpie", _pytest),
-    "scarpy": ("https://github.com/scrapy/scrapy", _pytest),
+    # "certbot": ("https://github.com/certbot/certbot", _pytest),
+    # "httpie": ("https://github.com/httpie/httpie", _pytest),
+    # "scarpy": ("https://github.com/scrapy/scrapy", _pytest),
     # "face_recognition": ("https://github.com/ageitgey/face_recognition", _pytest),
-    # # "nerd-fonts": ("https://github.com/ryanoasis/nerd-fonts", _pytest), furán nagy helyet foglalhat
+    # # # "nerd-fonts": ("https://github.com/ryanoasis/nerd-fonts", _pytest), furán nagy helyet foglalhat
     # "rich": ("https://github.com/Textualize/rich", _pytest),
     # "scikit-learn": ("https://github.com/scikit-learn/scikit-learn", _pytest),
     # "ansible": ("https://github.com/ansible/ansible", _pytest),
 }
 config = {
     "test": True,
-    "test_iterations": 3,
+    "test_iterations": 100,
     "radon": True,
     "codecov": True,
-
     "debug": True,
+    "atalakitasszam": True
 }
 
 def get_unittest_data(project_name, test_func, iter):
     def measure_time_and_mem(_project_name):
         data = []
         for i in range(iter):
+            time.sleep(0.5)
             start = timer()
             test_func(_project_name)
             end = timer()
@@ -187,6 +188,8 @@ def main():
             try:
                 project_measures = {}
                 transform_project(project_name)
+                if config["atalakitasszam"]:
+                    atalakitasszam_mero(project_name)
                 if should_get_metrics(project_name):
                     if config["test"]:
                         project_measures.update(get_unittest_data(project_name, test_func, config["test_iterations"]))
@@ -211,6 +214,16 @@ def main():
     #     print("*" * 50, "\nHIBA\n", "*" * 50)
     #     os.chdir(DEFAULT_PATH)
     #     raise e
+
+
+def atalakitasszam_mero(project_name):
+    anyag = open(os.getcwd() + "/transformed-" + project_name + "/transpy-output/atalakitasszam.txt").read()
+    # print(anyag)
+    numbers = anyag[:-1].split("+")
+    result = sum(map(int, numbers))
+    with open("../atalakitottak.txt", "a") as l:
+        l.write(f"{project_name}: {result}\n")
+    print(project_name, result)
 
 
 def mkdir_projectspath():

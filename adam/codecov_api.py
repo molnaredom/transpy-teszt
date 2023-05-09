@@ -15,7 +15,7 @@ def get_coverage(repo_name, project_name):
         headers=CODECOV_HEADERS,
     )
     content = json.loads(response.content)
-    if content['count'] == 0:
+    if 'count' not in content or content['count'] == 0:
         print("nincs COVERAGE-e")
         return None
     for commit in content['results']:  # átlagos esetben csak az első iterációig jut el
