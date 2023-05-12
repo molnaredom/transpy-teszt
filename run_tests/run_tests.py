@@ -11,7 +11,7 @@ from adam.codecov_api import get_coverage
 from adam.radon_machine import get_radon_metrics, radons_diff
 
 PROJECTS_PATH = Path(__file__).parent.resolve() / "projects"
-TEST_MEASURES_PATH = Path(__file__).parent.resolve() / "test_measures_v4.json"
+TEST_MEASURES_PATH = Path(__file__).parent.resolve() / "test_measures_v5.json"
 DEFAULT_PATH = Path(__file__).parent.resolve()
 
 
@@ -32,15 +32,15 @@ def _django_test(project):
 
 
 PROJECTS = {
-    "keras": ("https://github.com/keras-team/keras", _pytest),
+    # "keras": ("https://github.com/keras-team/keras", _pytest),
     "discord.py": ("https://github.com/Rapptz/discord.py", _pytest),
     "InstaPy": ("https://github.com/InstaPy/InstaPy", _pytest),
-    "django": ("https://github.com/django/django", _django_test),
+    # "django": ("https://github.com/django/django", _django_test),
     "pylint": ("https://github.com/PyCQA/pylint", _pytest),
     "flask": ("https://github.com/pallets/flask", _pytest),
     "loguru": ("https://github.com/Delgan/loguru", _pytest),
     "autojump": ("https://github.com/wting/autojump", _pytest),
-    # "spleeter": ("https://github.com/deezer/spleeter", _pytest),
+    "spleeter": ("https://github.com/deezer/spleeter", _pytest),
     # "freqtrade": ("https://github.com/freqtrade/freqtrade", _pytest),
     # "bokeh": ("https://github.com/bokeh/bokeh", _pytest),
     # "Gooey": ("https://github.com/chriskiehl/Gooey", _pytest),
@@ -65,11 +65,11 @@ PROJECTS = {
 }
 config = {
     "test": True,
-    "test_iterations": 100,
+    "test_iterations": 1,
     "radon": True,
     "codecov": True,
     "debug": True,
-    "atalakitasszam": True
+    "atalakitasszam": False
 }
 
 def get_unittest_data(project_name, test_func, iter):
@@ -147,7 +147,7 @@ def transform_project(project_name):
     t_project_name = f"transformed-{project_name}"
     if not (PROJECTS_PATH / t_project_name).exists():
         os.chdir(PROJECTS_PATH.parent)
-        subprocess.call([sys.executable, '/home/molnar/transpy-teszt/run_tests/transpy', f'{Path(PROJECTS_PATH / project_name)}', '-o'])
+        subprocess.call([sys.executable, '/home/molnar/transpy-fork', f'{Path(PROJECTS_PATH / project_name)}', '-o'])
         print("✓", t_project_name, "has created.")
     else:
         print("✓", t_project_name, "already exists.")
@@ -200,16 +200,18 @@ def main():
                             get_coverage(repo_name=url.split("/")[-2], project_name=url.split("/")[-1])
 
                     save_data_json(project_measures, project_name)
-            except FileNotFoundError:
-                print("Filenotfound error ---> cant_find_projects.txt")
+            except FileNotFoundError as e:
+                print("Filenotfound error ---> cant_find_projects.txt", e)
                 filename = "../cant_find_projects.txt"
                 mode = "a" if os.path.exists(filename) else "w"
                 with open(filename, mode) as f:
                     f.write(str(project_name) + "\n")
 
     except KeyboardInterrupt:
-        print("*" * 50, "\n           Művelet megszakítva\n", "*" * 50)
         os.chdir(DEFAULT_PATH)
+        raise KeyboardInterrupt
+        # print("*" * 50, "\n           Művelet megszakítva\n", "*" * 50)
+
     # except Exception as e:
     #     print("*" * 50, "\nHIBA\n", "*" * 50)
     #     os.chdir(DEFAULT_PATH)
