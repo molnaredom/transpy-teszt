@@ -32,16 +32,16 @@ def _django_test(project):
 
 
 PROJECTS = {
-    # "keras": ("https://github.com/keras-team/keras", _pytest),
+    "keras": ("https://github.com/keras-team/keras", _pytest),
     "discord.py": ("https://github.com/Rapptz/discord.py", _pytest),
     "InstaPy": ("https://github.com/InstaPy/InstaPy", _pytest),
-    # "django": ("https://github.com/django/django", _django_test),
+    "django": ("https://github.com/django/django", _django_test),
     "pylint": ("https://github.com/PyCQA/pylint", _pytest),
     "flask": ("https://github.com/pallets/flask", _pytest),
     "loguru": ("https://github.com/Delgan/loguru", _pytest),
     "autojump": ("https://github.com/wting/autojump", _pytest),
     "spleeter": ("https://github.com/deezer/spleeter", _pytest),
-    # "freqtrade": ("https://github.com/freqtrade/freqtrade", _pytest),
+    "freqtrade": ("https://github.com/freqtrade/freqtrade", _pytest),
     # "bokeh": ("https://github.com/bokeh/bokeh", _pytest),
     # "Gooey": ("https://github.com/chriskiehl/Gooey", _pytest),
     # "PythonRobotics": ("https://github.com/AtsushiSakai/PythonRobotics", _pytest),
