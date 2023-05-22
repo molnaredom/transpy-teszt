@@ -1,9 +1,9 @@
 # transpy-teszt
 
 ### Tasks:
-- [ ] TDK olvasása  
+- [x] TDK olvasása  
 
-- [ ] Több teszt több modulra, több iteációban és azokból átlagot vonni [x]
+- [x] Több teszt több modulra, több iteációban és azokból átlagot vonni [x]
 
 - Teljesebb kiértékelés(mostani upgradelése)
   - [x] test coverage
@@ -13,10 +13,10 @@
     - [x] Raw
     - [x] CC (Code Complexity)
     - [x] MI (Maintainability)
-    - [ ] hal (Halstead complexity)
+    - [x] hal (Halstead complexity)
   - [ ] művelet/időegység 
 
-- [ ] Nem ismer fel minden mintát --> finomítani kellene
+- [x] Nem ismer fel minden mintát --> finomítani kellene
 
 - [ ] Visszacsatolásos tanulás (biztosan kell-e az átalakítás)
   - [ ] Szabály alapú átalakítás helyett, megtanulni mikor érdemes valóban transzformálni 
