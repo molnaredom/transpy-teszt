@@ -32,21 +32,21 @@ def _django_test(project):
 
 
 PROJECTS = {
-    "keras": ("https://github.com/keras-team/keras", _pytest),
-    "discord.py": ("https://github.com/Rapptz/discord.py", _pytest),
-    "InstaPy": ("https://github.com/InstaPy/InstaPy", _pytest),
-    "django": ("https://github.com/django/django", _django_test),
-    "pylint": ("https://github.com/PyCQA/pylint", _pytest),
-    "flask": ("https://github.com/pallets/flask", _pytest),
-    "loguru": ("https://github.com/Delgan/loguru", _pytest),
-    "autojump": ("https://github.com/wting/autojump", _pytest),
-    "spleeter": ("https://github.com/deezer/spleeter", _pytest),
-    "freqtrade": ("https://github.com/freqtrade/freqtrade", _pytest),
+    # "keras": ("https://github.com/keras-team/keras", _pytest),
+    # "discord.py": ("https://github.com/Rapptz/discord.py", _pytest),
+    # "InstaPy": ("https://github.com/InstaPy/InstaPy", _pytest),
+    # "django": ("https://github.com/django/django", _django_test),
+    # "pylint": ("https://github.com/PyCQA/pylint", _pytest),
+    # "flask": ("https://github.com/pallets/flask", _pytest),
+    # "loguru": ("https://github.com/Delgan/loguru", _pytest),
+    # "autojump": ("https://github.com/wting/autojump", _pytest),
+    # "spleeter": ("https://github.com/deezer/spleeter", _pytest),
+    # "freqtrade": ("https://github.com/freqtrade/freqtrade", _pytest),
     # "bokeh": ("https://github.com/bokeh/bokeh", _pytest),
     # "Gooey": ("https://github.com/chriskiehl/Gooey", _pytest),
     # "PythonRobotics": ("https://github.com/AtsushiSakai/PythonRobotics", _pytest),
     # "textual": ("https://github.com/Textualize/textual", _pytest),
-    # "fairseq": ("https://github.com/facebookresearch/fairseq", _pytest),
+    "fairseq": ("https://github.com/facebookresearch/fairseq", _pytest),
     # "jax": ("https://github.com/google/jax", _pytest),
     # "poetry": ("https://github.com/python-poetry/poetry", _pytest),
     # "tqdm": ("https://github.com/tqdm/tqdm", _pytest),
@@ -64,11 +64,11 @@ PROJECTS = {
     # "ansible": ("https://github.com/ansible/ansible", _pytest),
 }
 config = {
-    "test": True,
+    "test": False,
     "test_iterations": 1,
-    "radon": True,
+    "radon": False,
     "codecov": True,
-    "debug": True,
+    "debug": False,
     "atalakitasszam": False
 }
 
@@ -166,13 +166,13 @@ def should_get_metrics(project_name):
         project_data = file_data[project_name]
         if config["test"] and "time" not in project_data:
             run = True
-            print("Unit test measures are not exists")
+            # print("Unit test measures are not exists")
         if config["radon"] and "cc" not in project_data:
             run = True
-            print("Radon metrics are not exists")
+            # print("Radon metrics are not exists")
         if config["codecov"] and "test coverage" not in project_data:
             run = True
-            print("Code coverage value is not exists")
+            # print("Code coverage value is not exists")
     if not run:
         print("✓ All the queried measures are already exist.")
     return run
@@ -182,7 +182,7 @@ def main():
         clone_oroginal_transpy()
         mkdir_projectspath()
         for project_name, (url, test_func) in PROJECTS.items():
-            print("----------------------------\nStart:", project_name)
+            # print("----------------------------\nStart:", project_name)
             os.chdir(PROJECTS_PATH)
             subprocess.call(['git', 'clone', url])
             try:
@@ -201,7 +201,7 @@ def main():
 
                     save_data_json(project_measures, project_name)
             except FileNotFoundError as e:
-                print("Filenotfound error ---> cant_find_projects.txt", e)
+                # print("Filenotfound error ---> cant_find_projects.txt", e)
                 filename = "../cant_find_projects.txt"
                 mode = "a" if os.path.exists(filename) else "w"
                 with open(filename, mode) as f:
@@ -225,7 +225,7 @@ def atalakitasszam_mero(project_name):
     result = sum(map(int, numbers))
     with open("../atalakitottak.txt", "a") as l:
         l.write(f"{project_name}: {result}\n")
-    print(project_name, result)
+    # print(project_name, result)
 
 
 def mkdir_projectspath():
